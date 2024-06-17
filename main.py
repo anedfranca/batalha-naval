@@ -1,4 +1,7 @@
-matriz = [
+from operacoes_tabuleiro import * 
+from constantes import *
+
+tabuleiro = [
     [None, None, None, None, None, None, None, None, None, None],
     [None, None, None, None, None, None, None, None, None, None],
     ["n3", None, None, None, None, None, "n2", "n2", "n2", "n2"],
@@ -9,47 +12,39 @@ matriz = [
     [None, None, None, None, None, None, None, None, None, None],
 ]
 
-LETRAS = "ABCDEFGH" # indexável
+printa_tabuleiro(tabuleiro)
 
-qtde_linhas = len(matriz) # 8
-qtde_colunas = len(matriz[0]) # 10
-
-print("\n    1  2  3  4  5  6  7  8  9  10")
-
-for i in range(qtde_linhas):
-
-    print(LETRAS[i], end=" | ")
-
-    for j in range(qtde_colunas):
-        elemento = matriz[i][j]
-        
-        if elemento == None:
-            print("🌊", end=" ")
-        else:
-            print("🚢", end=" ")
-
-        if j == 9:
-            print()
-
-print()
 ###############################################
 
+tamanhos_restantes = [3, 1, 5, 2, 2]
+
 while True:
+    if (sum(tamanhos_restantes) == 0):
+        break
+
     print("Navios a serem inseridos: ")
-    print("3 navios tamanho 1")
-    print("1 navio tamanho 2")
-    print("2 navios tamanho 3")
+    for i in range(len(tamanhos_restantes)):
+        if (tamanhos_restantes[i] > 0):
+            print(tamanhos_restantes[i], f"navios tamanho {i+1}")
 
-    navios_inseridos = int(input("\nDigite o tamanho do navio a ser inserido: "))
+    tam_navio = int(input("\nDigite o tamanho do navio a ser inserido: "))
+    coordenada = input("Em qual coordenada será inserido seu barquinho?  Ex: A1\n").upper() # A10
 
-    if (navios_inseridos == 1):
-        ...
-    elif (navios_inseridos == 2):
-        ...
-    elif (navios_inseridos == 3):
-        ...
+    i = DICT_RELACOES[coordenada[0]] # 0
+    j = int(coordenada[1]) - 1
+
+    tabuleiro[i][j] = 'n'
+
+    printa_tabuleiro(tabuleiro)
+
+    if (tam_navio < 1 or tam_navio > 5):
+        print("tamanho inválido!!!")
     else:
-        print("Invalido!")
+        baixo = tamanhos_restantes[tam_navio-1] - 1
+        if (baixo >= 0):
+            tamanhos_restantes[tam_navio-1] -= 1
+        else:
+            print("tamanho inválido!!!") 
 
 
 
